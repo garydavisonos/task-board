@@ -1,0 +1,68 @@
+import { create } from 'zustand';
+import { ListProps } from '@/resources/types/ListProps';
+import { CardProps } from '@/resources/types/CardProps';
+
+type ListState = {
+  lists: ListProps[];
+  addList: (list: ListProps) => void;
+  removeList: (listId: number) => void;
+  addCard: (listId: number | null, card: CardProps) => void;
+  removeCard: (listId: number | null, cardId: number) => void;
+  updateCard: (listId: number | null, cardId: number, updatedCard: CardProps) => void;
+};
+
+const useListStore = create<ListState>((set) => ({
+  lists: [
+    {
+      cards: [
+        { label: 'Card 1.1', description: 'Lorem ipsum', deadline: 'YYYY', id: 1, listId: 1, completed: false },
+        { label: 'Card 1.2', description: 'Lorem ipsum', deadline: 'YYYY', id: 12, listId: 1, completed: false },
+        { label: 'Card 1.3', description: 'Lorem ipsum', deadline: 'YYYY', id: 123, listId: 1, completed: false },
+      ],
+      id: 1,
+      label: 'List 1',
+    },
+    {
+      cards: [
+        { label: 'Card 2.1', description: 'Lorem ipsum', deadline: 'YYYY', id: 1, listId: 12, completed: false },
+        { label: 'Card 2.2', description: 'Lorem ipsum', deadline: 'YYYY', id: 12, listId: 12, completed: false },
+        { label: 'Card 2.3', description: 'Lorem ipsum', deadline: 'YYYY', id: 123, listId: 12, completed: false },
+      ],
+      id: 12,
+      label: 'List 2',
+    },
+    {
+      cards: [
+        { label: 'Card 3.1', description: 'Lorem ipsum', deadline: 'YYYY', id: 1, listId: 123, completed: false },
+        { label: 'Card 3.2', description: 'Lorem ipsum', deadline: 'YYYY', id: 12, listId: 123, completed: false },
+        { label: 'Card 3.3', description: 'Lorem ipsum', deadline: 'YYYY', id: 123, listId: 123, completed: false },
+      ],
+      id: 123,
+      label: 'List 3',
+    },
+  ],
+  addList: (list) => set((state) => ({ lists: [...state.lists, list] })),
+  removeList: (listId) => set((state) => ({
+    lists: state.lists.filter(list => list.id !== listId)
+  })),
+  addCard: (listId, card) =>
+    set((state) => ({
+      lists: state.lists.map((list) =>
+        list.id === listId ? { ...list, cards: [...list.cards, card] } : list
+      ),
+    })),
+  removeCard: (listId, cardId) =>
+    set((state) => ({
+      lists: state.lists.map((list) =>
+        list.id === listId ? { ...list, cards: list.cards.filter(card => card.id !== cardId) } : list
+      ),
+    })),
+  updateCard: (listId, cardId, updateCard) =>
+    set((state) => ({
+      lists: state.lists.map((list) =>
+        list.id === listId ? { ...list, cards: list.cards.map(card => card.id === cardId ? updateCard : card ) } : list
+      ),
+    })),
+}));
+
+export default useListStore;

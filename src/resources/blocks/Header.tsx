@@ -1,0 +1,35 @@
+import UtilityNavLink from "@/resources/components/NavItem";
+import { NavItemProps } from "@/resources/types/NavItemProps";
+
+
+const Header = () => {
+
+    const utilityNavLinks : NavItemProps[] = [
+        {
+            href: '/',
+            label: 'Login',
+            id: 12   
+        },
+        {
+            href: '/',
+            label: 'Register',
+            id: 123 
+        }
+    ]
+
+    return (
+        <header>
+            <nav id="utility-nav" className="bg-gray-600 text-white">
+                <ul className="flex justify-end gap-4 py-2 px-4 text-sm">
+                    {utilityNavLinks.map( item => <UtilityNavLink key={item.id} {...item} />)}
+                </ul>
+            </nav>
+            <div className="p-4 bg-gray-800 text-white text-2xl font-bold">
+                <a href="/">Task Board</a>
+            </div>
+        </header>
+    )
+}
+
+export default Header;
+
