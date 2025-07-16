@@ -18,7 +18,7 @@ const List = ({ cards, label, id }: ListProps) => {
   const [moveCards, setMoveCards] = useState<boolean>(false);
   const [moveButton, setMoveButton] = useState<boolean>(false);
 
-  const onClickSelectCards = useCallback(
+  const handleOnClickSelectCards = useCallback(
     (event: React.MouseEvent<HTMLInputElement>) => {
       const { dataset } = event.target as HTMLInputElement;
       let { id = 0 } = dataset;
@@ -40,7 +40,7 @@ const List = ({ cards, label, id }: ListProps) => {
     [selectedCards, cards]
   );
 
-  const onClickMoveCards = useCallback(() => {
+  const handleOnClickMoveCards = useCallback(() => {
     if (selectedCards.length > 0 && newListId) {
       selectedCards.map((card) => {
         // Remove from current list.
@@ -58,7 +58,7 @@ const List = ({ cards, label, id }: ListProps) => {
     }
   }, [selectedCards, newListId, removeCard, addCard, id]);
 
-  const onClickDeleteCards = useCallback(() => {
+  const handleOnClickDeleteCards = useCallback(() => {
     if (selectedCards.length > 0) {
       selectedCards.forEach((card) => {
         // Remove from current list.
@@ -107,7 +107,7 @@ const List = ({ cards, label, id }: ListProps) => {
             <input
               type="checkbox"
               data-id={item.id}
-              onClick={(event) => onClickSelectCards(event)}
+              onClick={handleOnClickSelectCards}
             />
             <Card key={item.id} {...item} listId={id} />
           </div>
@@ -127,7 +127,7 @@ const List = ({ cards, label, id }: ListProps) => {
             <TextButton
               label="Delete Card(s)"
               className="text-red-500"
-              onClick={() => onClickDeleteCards()}
+              onClick={handleOnClickDeleteCards}
             />
           </li>
         </ul>
@@ -155,7 +155,7 @@ const List = ({ cards, label, id }: ListProps) => {
             <Button
               label="Move"
               type="tertiary"
-              onClick={() => onClickMoveCards()}
+              onClick={handleOnClickMoveCards}
             />
           )}
         </>
