@@ -5,12 +5,12 @@ const Header = () => {
   const utilityNavLinks: NavItemProps[] = [
     {
       href: '/',
-      label: 'Login',
+      label: 'Page Name',
       id: 12
     },
     {
       href: '/',
-      label: 'Register',
+      label: 'Page Name',
       id: 123
     }
   ];
