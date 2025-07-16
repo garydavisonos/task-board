@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { CardProps } from '@/resources/types/CardProps';
 import TextButton from '@/resources/components/TextButton';
 
@@ -16,6 +18,21 @@ const Card = ({
   const { removeCard } = useListStore();
   const { openCardModal } = useCardModalStore();
 
+  const handleViewClick = useCallback(() => {
+    openCardModal({
+      label,
+      description,
+      deadline,
+      id,
+      listId,
+      completed
+    });
+  }, [label, description, deadline, id, listId, completed, openCardModal]);
+
+  const handleDeleteClick = useCallback(() => {
+    removeCard(listId, id);
+  }, [listId, id, removeCard]);
+
   return (
     <article className="bg-white rounded text-sm p-4 flex items-center flex-1">
       <h3
@@ -31,16 +48,7 @@ const Card = ({
             <TextButton
               label="View"
               className="text-blue-500"
-              onClick={() =>
-                openCardModal({
-                  label,
-                  description,
-                  deadline,
-                  id,
-                  listId,
-                  completed
-                })
-              }
+              onClick={handleViewClick}
             />
           </li>
         )}
@@ -48,7 +56,7 @@ const Card = ({
           <TextButton
             label="Delete"
             className="text-red-500"
-            onClick={() => removeCard(listId, id)}
+            onClick={handleDeleteClick}
           />
         </li>
       </ul>
