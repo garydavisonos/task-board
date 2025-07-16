@@ -1,4 +1,6 @@
-export async function POST(req) {
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function POST(req : NextRequest): Promise<NextResponse> {
     try {
         const body = await req.json();
 
@@ -7,16 +9,16 @@ export async function POST(req) {
         // Mock email.
         console.log(`Email sent to ${email}: Your task #${taskId} is complete!`);
 
-        return Response.json({
+        return NextResponse.json({
             message: `Task ${taskId} completed and mock email sent`,
         });
     } catch(error) {
         console.error(error);
         
-        return Response.json(
+        return NextResponse.json(
             {
                 message: 'Failed to complete task or send email',
-                error: error.message,
+                error: error instanceof Error ? error.message : 'Unknown error',
             },
             { status: 500 } // Internal Server Error
         );
