@@ -9,7 +9,7 @@ type ListModalState = {
 const useListModalStore = create<ListModalState>((set) => ({
   listModalIsOpen: false,
   openListModal: () => set({ listModalIsOpen: true }),
-  closeListModal: () => set({ listModalIsOpen: false }),
+  closeListModal: () => set({ listModalIsOpen: false })
 }));
 
 export default useListModalStore;

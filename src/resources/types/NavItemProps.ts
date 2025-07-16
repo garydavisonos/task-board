@@ -1,5 +1,5 @@
 export type NavItemProps = {
-    href: string,
-    label: string,
-    id: number
+  href: string;
+  label: string;
+  id: number;
 };

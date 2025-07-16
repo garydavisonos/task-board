@@ -9,7 +9,7 @@ type CardModalState = {
 };
 
 const useCardModalStore = create<CardModalState>((set) => ({
-  cardModalIsOpen: false, 
+  cardModalIsOpen: false,
   card: {
     label: '',
     description: '',
@@ -19,7 +19,7 @@ const useCardModalStore = create<CardModalState>((set) => ({
     completed: true
   },
   openCardModal: (card: CardProps) => set({ cardModalIsOpen: true, card }),
-  closeCardModal: () => set({ cardModalIsOpen: false }),
+  closeCardModal: () => set({ cardModalIsOpen: false })
 }));
 
 export default useCardModalStore;

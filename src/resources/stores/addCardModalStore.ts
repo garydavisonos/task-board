@@ -8,10 +8,10 @@ type AddCardModalState = {
 };
 
 const useAddCardModalStore = create<AddCardModalState>((set) => ({
-  addCardModalIsOpen: false, 
+  addCardModalIsOpen: false,
   listId: null,
   openAddCardModal: (listId) => set({ addCardModalIsOpen: true, listId }),
-  closeAddCardModal: () => set({ addCardModalIsOpen: false }),
+  closeAddCardModal: () => set({ addCardModalIsOpen: false })
 }));
 
 export default useAddCardModalStore;

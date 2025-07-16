@@ -1,3 +1,3 @@
 export type CloseButtonProps = {
-    onClick?: () => void,
-}
+  onClick?: () => void;
+};
