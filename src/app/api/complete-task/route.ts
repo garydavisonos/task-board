@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
+ * POST /api/complete-task
  *
- * @param req
+ * Marks a task as completed and mocks sending an email notification.
+ *
+ * Expects a JSON request body with:
+ * - `email` (string): The user's email address.
+ * - `taskId` (number): The ID of the task being completed.
+ *
+ * Logs a message to stdout simulating the sending of an email.
+ * @param {NextRequest} req - The incoming HTTP request object.
+ * @returns {Promise<NextResponse>} A JSON response indicating success or failure.
  */
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {

@@ -38,7 +38,14 @@ const tasks: CardProps[] = [
 ];
 
 /**
+ * GET /api/check-tasks
  *
+ * Checks all tasks for overdue deadlines.
+ *
+ * For each task in the internal `tasks` array:
+ * - Compares the current date/time to the task's deadline.
+ * - Logs a message to stdout if the task is overdue.
+ * @returns {Promise<NextResponse>} A JSON response indicating that tasks have been checked.
  */
 export async function GET() {
   const now = new Date();
