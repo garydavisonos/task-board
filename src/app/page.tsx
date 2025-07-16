@@ -4,6 +4,7 @@ import useModalStore from '@/resources/stores/listModalStore';
 import useListStore from '@/resources/stores/listStore';
 import useAddCardModalStore from '@/resources/stores/addCardModalStore';
 import useCardModalStore from '@/resources/stores/cardModal';
+import useHydrateStore from '@/resources/stores/hydratedStore';
 
 import Header from '@/resources/blocks/Header';
 import List from '@/resources/components/List';
@@ -16,10 +17,27 @@ import CardModal from '@/resources/components/CardModal';
  *
  */
 export default function Page() {
+  // Hydrate the page
+  useHydrateStore();
+
   const { listModalIsOpen, openListModal } = useModalStore();
-  const { lists } = useListStore();
+  const { hydrated, lists } = useListStore();
   const { addCardModalIsOpen } = useAddCardModalStore();
   const { cardModalIsOpen, card } = useCardModalStore();
+
+  if (!hydrated) {
+    return (
+      <>
+        <Header />
+        <main className="p-4">
+          <div className="flex gap-2 items-center">
+            <span className="text-xl">⌛</span>
+            <h1 className="text-xl font-bold">Loading...</h1>
+          </div>
+        </main>
+      </>
+    );
+  }
 
   return (
     <>
