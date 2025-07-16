@@ -39,6 +39,10 @@ const CardModal = ({
 
     // Mark complete.
     updateCard(listId, id, { ...card, completed: true });
+
+    // Send mock email.
+    sendCompleteEmail(id);
+
     closeCardModal();
   };
 
@@ -52,6 +56,29 @@ const CardModal = ({
     setReadOnly(true);
     closeCardModal();
   };
+
+  const sendCompleteEmail = async (id: number) => {
+    try {
+      const res = await fetch('/api/complete-task', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: "foo@foobar.com",
+          taskId: id
+        })
+      });
+
+      const data = await res.json();
+
+      console.log("data", data);
+
+    } catch(error) {
+      console.error(error);
+      throw error;
+    }
+  }
 
   return (
     <div className="fixed inset-0 bg-black/75 flex items-center justify-center">
