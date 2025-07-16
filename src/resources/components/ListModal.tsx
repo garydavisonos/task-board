@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
 import useListModalStore from '@/resources/stores/listModalStore';
 import useListStore from '@/resources/stores/listStore';
@@ -11,23 +11,20 @@ const ListModal = () => {
 
   const [listLabel, setListLabel] = useState('');
 
-  const handleSubmit = useCallback(
-    (event: React.FormEvent) => {
-      event.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
 
-      // Add new list item.
-      addList({
-        id: Date.now(),
-        label: listLabel,
-        cards: []
-      });
+    // Add new list item.
+    addList({
+      id: Date.now(),
+      label: listLabel,
+      cards: []
+    });
 
-      // Reset.
-      setListLabel('');
-      closeListModal();
-    },
-    [listLabel, closeListModal]
-  );
+    // Reset.
+    setListLabel('');
+    closeListModal();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/75 flex items-center justify-center">

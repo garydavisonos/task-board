@@ -27,30 +27,26 @@ const CardModal = ({
     completed
   });
 
-  const handleOnClickEdit = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
+  const handleOnClickEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
 
-      // Make editable.
-      setReadOnly(false);
-    },
-    []
-  );
+    // Make editable.
+    setReadOnly(false);
+  };
 
-  const handleOnClickComplete = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.preventDefault();
+  const handleOnClickComplete = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
 
-      // Mark complete.
-      updateCard(listId, id, { ...card, completed: true });
+    // Mark complete.
+    updateCard(listId, id, { ...card, completed: true });
 
-      // Send mock email.
-      sendCompleteEmail(id);
+    // Send mock email.
+    sendCompleteEmail(id);
 
-      closeCardModal();
-    },
-    [card]
-  );
+    closeCardModal();
+  };
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,19 +56,16 @@ const CardModal = ({
     []
   );
 
-  const handleSubmit = useCallback(
-    (event: React.FormEvent) => {
-      event.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
 
-      // Update card.
-      updateCard(listId, id, card);
+    // Update card.
+    updateCard(listId, id, card);
 
-      // Reset.
-      setReadOnly(true);
-      closeCardModal();
-    },
-    [listId, id, card, closeCardModal, updateCard]
-  );
+    // Reset.
+    setReadOnly(true);
+    closeCardModal();
+  };
 
   const sendCompleteEmail = async (id: number) => {
     try {

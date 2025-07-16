@@ -21,22 +21,19 @@ const AddCardModal = () => {
 
   const [card, setCard] = useState<CardProps>(cardDefault);
 
-  const handleSubmit = useCallback(
-    (event: React.FormEvent) => {
-      event.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
 
-      // Add Card.
-      addCard(listId, {
-        ...card,
-        id: Date.now()
-      });
+    // Add Card.
+    addCard(listId, {
+      ...card,
+      id: Date.now()
+    });
 
-      // Reset.
-      setCard(cardDefault);
-      closeAddCardModal();
-    },
-    [card, listId, addCard, closeAddCardModal]
-  );
+    // Reset.
+    setCard(cardDefault);
+    closeAddCardModal();
+  };
 
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {

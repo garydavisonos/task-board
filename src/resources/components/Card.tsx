@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import { CardProps } from '@/resources/types/CardProps';
 import TextButton from '@/resources/components/TextButton';
 
@@ -18,7 +16,7 @@ const Card = ({
   const { removeCard } = useListStore();
   const { openCardModal } = useCardModalStore();
 
-  const handleViewClick = useCallback(() => {
+  const handleViewClick = () => {
     openCardModal({
       label,
       description,
@@ -27,11 +25,11 @@ const Card = ({
       listId,
       completed
     });
-  }, [label, description, deadline, id, listId, completed, openCardModal]);
+  };
 
-  const handleDeleteClick = useCallback(() => {
+  const handleDeleteClick = () => {
     removeCard(listId, id);
-  }, [listId, id, removeCard]);
+  };
 
   return (
     <article className="bg-white rounded text-sm p-4 flex items-center flex-1">

@@ -18,29 +18,28 @@ const List = ({ cards, label, id }: ListProps) => {
   const [moveCards, setMoveCards] = useState<boolean>(false);
   const [moveButton, setMoveButton] = useState<boolean>(false);
 
-  const handleOnClickSelectCards = useCallback(
-    (event: React.MouseEvent<HTMLInputElement>) => {
-      const { dataset } = event.target as HTMLInputElement;
-      let { id = 0 } = dataset;
-      id = +id;
+  const handleOnClickSelectCards = (
+    event: React.MouseEvent<HTMLInputElement>
+  ) => {
+    const { dataset } = event.target as HTMLInputElement;
+    let { id = 0 } = dataset;
+    id = +id;
 
-      // Check if the card is already in cardsToMove.
-      const isCardInSelectedList = selectedCards.some((item) => item.id === id);
+    // Check if the card is already in cardsToMove.
+    const isCardInSelectedList = selectedCards.some((item) => item.id === id);
 
-      if (isCardInSelectedList) {
-        // Remove the card from cardsToMove.
-        setSelectedCards(selectedCards.filter((item) => item.id !== id));
-      } else {
-        // Add the card to cardsToMove.
-        const card = cards.filter((card) => card.id === id)[0];
+    if (isCardInSelectedList) {
+      // Remove the card from cardsToMove.
+      setSelectedCards(selectedCards.filter((item) => item.id !== id));
+    } else {
+      // Add the card to cardsToMove.
+      const card = cards.filter((card) => card.id === id)[0];
 
-        setSelectedCards([...selectedCards, card]);
-      }
-    },
-    [selectedCards, cards]
-  );
+      setSelectedCards([...selectedCards, card]);
+    }
+  };
 
-  const handleOnClickMoveCards = useCallback(() => {
+  const handleOnClickMoveCards = () => {
     if (selectedCards.length > 0 && newListId) {
       selectedCards.map((card) => {
         // Remove from current list.
@@ -56,9 +55,9 @@ const List = ({ cards, label, id }: ListProps) => {
         setSelectedCards([]);
       });
     }
-  }, [selectedCards, newListId, removeCard, addCard, id]);
+  };
 
-  const handleOnClickDeleteCards = useCallback(() => {
+  const handleOnClickDeleteCards = () => {
     if (selectedCards.length > 0) {
       selectedCards.forEach((card) => {
         // Remove from current list.
@@ -68,7 +67,7 @@ const List = ({ cards, label, id }: ListProps) => {
         setSelectedCards([]);
       });
     }
-  }, [selectedCards, removeCard, id]);
+  };
 
   const handleChangeSelectList = useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
