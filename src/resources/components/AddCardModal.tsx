@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import useAddCardModalStore from '@/resources/stores/addCardModalStore';
 import useListStore from '@/resources/stores/listStore';
@@ -9,7 +9,8 @@ import CloseButton from './CloseButton';
 const AddCardModal = () => {
   const { addCard } = useListStore();
   const { closeAddCardModal, listId } = useAddCardModalStore();
-  const cardDefault = {
+
+  const cardDefault: CardProps = {
     label: '',
     description: '',
     deadline: '',
@@ -17,21 +18,33 @@ const AddCardModal = () => {
     listId: 0,
     completed: false
   };
+
   const [card, setCard] = useState<CardProps>(cardDefault);
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
 
-    // Add Card.
-    addCard(listId, {
-      ...card,
-      id: Date.now()
-    });
+      // Add Card.
+      addCard(listId, {
+        ...card,
+        id: Date.now()
+      });
 
-    // Reset.
-    setCard(cardDefault);
-    closeAddCardModal();
-  };
+      // Reset.
+      setCard(cardDefault);
+      closeAddCardModal();
+    },
+    [card, listId, addCard, closeAddCardModal]
+  );
+
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = event.target;
+      setCard((prevCard) => ({ ...prevCard, [name]: value }));
+    },
+    []
+  );
 
   return (
     <div className="fixed inset-0 bg-black/75 flex items-center justify-center">
@@ -39,33 +52,36 @@ const AddCardModal = () => {
         <form onSubmit={handleSubmit}>
           <fieldset className="flex flex-col gap-2">
             <legend className="font-bold text-lg w-full mb-2">Add Card</legend>
-            <label className="text-sm">
+            <label className="text-sm" htmlFor="label">
               Label
               <input
+                id="label"
+                name="label"
                 className="border border-gray-400 p-2 w-full"
-                onChange={(event) =>
-                  setCard({ ...card, label: event.target.value })
-                }
+                onChange={handleInputChange}
+                required={true}
               />
             </label>
-            <label className="text-sm">
+            <label className="text-sm" htmlFor="description">
               Description
               <input
+                id="description"
+                name="description"
                 className="border border-gray-400 p-2 w-full"
                 type="text"
-                onChange={(event) =>
-                  setCard({ ...card, description: event.target.value })
-                }
+                onChange={handleInputChange}
+                required={true}
               />
             </label>
-            <label className="text-sm">
+            <label className="text-sm" htmlFor="deadline">
               Deadline
               <input
+                id="deadline"
+                name="deadline"
                 className="text-sm border border-gray-400 p-2 w-full"
                 type="date"
-                onChange={(event) =>
-                  setCard({ ...card, deadline: event.target.value })
-                }
+                onChange={handleInputChange}
+                required={true}
               />
             </label>
             <input
@@ -75,7 +91,7 @@ const AddCardModal = () => {
             />
           </fieldset>
         </form>
-        <CloseButton onClick={() => closeAddCardModal()} />
+        <CloseButton onClick={closeAddCardModal} />
       </div>
     </div>
   );
