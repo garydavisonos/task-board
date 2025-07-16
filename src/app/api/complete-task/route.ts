@@ -13,9 +13,14 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     // Mock email.
     console.log(`Email sent to ${email}: Your task #${taskId} is complete!`);
 
-    return NextResponse.json({
-      message: `Task ${taskId} completed and mock email sent`
-    });
+    return NextResponse.json(
+      {
+        message: `Task ${taskId} completed and mock email sent`
+      },
+      {
+        status: 200
+      }
+    );
   } catch (error) {
     console.error(error);
 

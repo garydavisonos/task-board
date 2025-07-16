@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { CardProps } from '@/resources/types/CardProps';
 import useCardModalStore from '@/resources/stores/cardModal';
@@ -27,35 +27,52 @@ const CardModal = ({
     completed
   });
 
-  const onClickEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleOnClickEdit = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
 
-    // Make editable.
-    setReadOnly(false);
-  };
+      // Make editable.
+      setReadOnly(false);
+    },
+    []
+  );
 
-  const onClickComplete = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
+  const handleOnClickComplete = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.preventDefault();
 
-    // Mark complete.
-    updateCard(listId, id, { ...card, completed: true });
+      // Mark complete.
+      updateCard(listId, id, { ...card, completed: true });
 
-    // Send mock email.
-    sendCompleteEmail(id);
+      // Send mock email.
+      sendCompleteEmail(id);
 
-    closeCardModal();
-  };
+      closeCardModal();
+    },
+    [card]
+  );
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = event.target;
+      setCard((prevCard) => ({ ...prevCard, [name]: value }));
+    },
+    []
+  );
 
-    // Update card.
-    updateCard(listId, id, card);
+  const handleSubmit = useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
 
-    // Reset.
-    setReadOnly(true);
-    closeCardModal();
-  };
+      // Update card.
+      updateCard(listId, id, card);
+
+      // Reset.
+      setReadOnly(true);
+      closeCardModal();
+    },
+    [listId, id, card, closeCardModal, updateCard]
+  );
 
   const sendCompleteEmail = async (id: number) => {
     try {
@@ -65,14 +82,14 @@ const CardModal = ({
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          email: 'foo@foobar.com',
+          email: 'name@companyname.com',
           taskId: id
         })
       });
 
-      const data = await res.json();
-
-      console.log('data', data);
+      if (res.status === 200) {
+        console.log('Email successfully sent');
+      }
     } catch (error) {
       console.error(error);
       throw error;
@@ -89,14 +106,14 @@ const CardModal = ({
                 <TextButton
                   label="Edit"
                   className="text-blue-500"
-                  onClick={(event) => onClickEdit(event)}
+                  onClick={handleOnClickEdit}
                 />
               </li>
               <li>
                 <TextButton
                   label="Complete"
                   className="text-green-500"
-                  onClick={(event) => onClickComplete(event)}
+                  onClick={handleOnClickComplete}
                 />
               </li>
             </ul>
@@ -106,27 +123,24 @@ const CardModal = ({
             name="label"
             readOnly={readOnly}
             value={card.label}
-            onChange={(event) =>
-              setCard({ ...card, label: event.target.value })
-            }
+            onChange={handleInputChange}
+            required={true}
           />
           <input
             type="text"
             name="description"
             readOnly={readOnly}
             value={card.description}
-            onChange={(event) =>
-              setCard({ ...card, description: event.target.value })
-            }
+            onChange={handleInputChange}
+            required={true}
           />
           <input
             type="date"
-            name="date"
+            name="deadline"
             readOnly={readOnly}
             value={card.deadline}
-            onChange={(event) =>
-              setCard({ ...card, deadline: event.target.value })
-            }
+            onChange={handleInputChange}
+            required={true}
           />
           {!readOnly && (
             <input

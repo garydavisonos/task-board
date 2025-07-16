@@ -51,7 +51,12 @@ export async function GET() {
     }
   });
 
-  return NextResponse.json({
-    message: 'Tasks have been checked for overdue deadlines'
-  });
+  return NextResponse.json(
+    {
+      message: 'Tasks have been checked for overdue deadlines'
+    },
+    {
+      status: 200
+    }
+  );
 }
