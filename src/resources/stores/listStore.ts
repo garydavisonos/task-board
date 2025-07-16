@@ -24,18 +24,18 @@ const useListStore = create<ListState>((set) => ({
     },
     {
       cards: [
-        { label: 'Card 2.1', description: 'Lorem ipsum', deadline: 'YYYY', id: 1, listId: 12, completed: false },
-        { label: 'Card 2.2', description: 'Lorem ipsum', deadline: 'YYYY', id: 12, listId: 12, completed: false },
-        { label: 'Card 2.3', description: 'Lorem ipsum', deadline: 'YYYY', id: 123, listId: 12, completed: false },
+        { label: 'Card 2.1', description: 'Lorem ipsum', deadline: 'YYYY', id: 2, listId: 12, completed: false },
+        { label: 'Card 2.2', description: 'Lorem ipsum', deadline: 'YYYY', id: 22, listId: 12, completed: false },
+        { label: 'Card 2.3', description: 'Lorem ipsum', deadline: 'YYYY', id: 223, listId: 12, completed: false },
       ],
       id: 12,
       label: 'List 2',
     },
     {
       cards: [
-        { label: 'Card 3.1', description: 'Lorem ipsum', deadline: 'YYYY', id: 1, listId: 123, completed: false },
-        { label: 'Card 3.2', description: 'Lorem ipsum', deadline: 'YYYY', id: 12, listId: 123, completed: false },
-        { label: 'Card 3.3', description: 'Lorem ipsum', deadline: 'YYYY', id: 123, listId: 123, completed: false },
+        { label: 'Card 3.1', description: 'Lorem ipsum', deadline: 'YYYY', id: 3, listId: 123, completed: false },
+        { label: 'Card 3.2', description: 'Lorem ipsum', deadline: 'YYYY', id: 32, listId: 123, completed: false },
+        { label: 'Card 3.3', description: 'Lorem ipsum', deadline: 'YYYY', id: 323, listId: 123, completed: false },
       ],
       id: 123,
       label: 'List 3',
