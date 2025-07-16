@@ -25,7 +25,7 @@ const Header = () => {
                 </ul>
             </nav>
             <div className="p-4 bg-gray-800 text-white text-2xl font-bold">
-                <a href="/">Task Board</a>
+                Task Board
             </div>
         </header>
     )

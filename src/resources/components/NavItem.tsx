@@ -1,9 +1,11 @@
 import { NavItemProps } from "@/resources/types/NavItemProps";
+import Link from "next/link";
+
 
 const UtilityNavLink = ({ href , label } : NavItemProps) => {
     return (
         <li>
-            <a href={href} className="underline hover:no-underline">{label}</a>
+            <Link href={href} className="underline hover:no-underline">{label}</Link>
         </li>
     )
 }
