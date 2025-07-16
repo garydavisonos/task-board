@@ -22,7 +22,7 @@ const useListStore = create<ListState>((set) => ({
         {
           label: 'Card 1.1',
           description: 'Lorem ipsum',
-          deadline: 'YYYY',
+          deadline: '2025-07-16',
           id: 1,
           listId: 1,
           completed: false
@@ -30,7 +30,7 @@ const useListStore = create<ListState>((set) => ({
         {
           label: 'Card 1.2',
           description: 'Lorem ipsum',
-          deadline: 'YYYY',
+          deadline: '2025-07-16',
           id: 12,
           listId: 1,
           completed: false
@@ -38,7 +38,7 @@ const useListStore = create<ListState>((set) => ({
         {
           label: 'Card 1.3',
           description: 'Lorem ipsum',
-          deadline: 'YYYY',
+          deadline: '2025-07-16',
           id: 123,
           listId: 1,
           completed: false
@@ -52,7 +52,7 @@ const useListStore = create<ListState>((set) => ({
         {
           label: 'Card 2.1',
           description: 'Lorem ipsum',
-          deadline: 'YYYY',
+          deadline: '2025-07-15',
           id: 2,
           listId: 12,
           completed: false
@@ -60,7 +60,7 @@ const useListStore = create<ListState>((set) => ({
         {
           label: 'Card 2.2',
           description: 'Lorem ipsum',
-          deadline: 'YYYY',
+          deadline: '2025-07-15',
           id: 22,
           listId: 12,
           completed: false
@@ -68,7 +68,7 @@ const useListStore = create<ListState>((set) => ({
         {
           label: 'Card 2.3',
           description: 'Lorem ipsum',
-          deadline: 'YYYY',
+          deadline: '2025-07-15',
           id: 223,
           listId: 12,
           completed: false
@@ -82,7 +82,7 @@ const useListStore = create<ListState>((set) => ({
         {
           label: 'Card 3.1',
           description: 'Lorem ipsum',
-          deadline: 'YYYY',
+          deadline: '2025-07-14',
           id: 3,
           listId: 123,
           completed: false
@@ -90,7 +90,7 @@ const useListStore = create<ListState>((set) => ({
         {
           label: 'Card 3.2',
           description: 'Lorem ipsum',
-          deadline: 'YYYY',
+          deadline: '2025-07-14',
           id: 32,
           listId: 123,
           completed: false
@@ -98,7 +98,7 @@ const useListStore = create<ListState>((set) => ({
         {
           label: 'Card 3.3',
           description: 'Lorem ipsum',
-          deadline: 'YYYY',
+          deadline: '2025-07-14',
           id: 323,
           listId: 123,
           completed: false
