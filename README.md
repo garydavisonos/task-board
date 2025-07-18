@@ -50,7 +50,7 @@ A containerised task management application built with Next.js, TypeScript, and 
 
 4. Start the application with Docker Compose:
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
 
 This will start:
@@ -117,6 +117,13 @@ The application provides RESTful API endpoints:
 
 
 ## Development
+
+### Tests
+
+To run written tests:
+```bash
+npm run test
+```
 
 ### Linting
 
