@@ -3,6 +3,8 @@ export type CardProps = {
   description: string;
   deadline: string;
   id: number;
-  listId: number;
+  list_id: number;
   completed: boolean;
+  created_at?: Date;
+  updated_at?: Date;
 };

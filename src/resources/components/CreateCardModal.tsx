@@ -1,21 +1,21 @@
 import { useState, useCallback } from 'react';
 
-import useAddCardModalStore from '@/resources/stores/addCardModalStore';
+import useCreateCardModalStore from '@/resources/stores/createCardModalStore';
 import useListStore from '@/resources/stores/listStore';
 import { CardProps } from '@/resources/types/CardProps';
 
 import CloseButton from './CloseButton';
 
-const AddCardModal = () => {
-  const { addCard } = useListStore();
-  const { closeAddCardModal, listId } = useAddCardModalStore();
+const CreateCardModal = () => {
+  const { createCard } = useListStore();
+  const { closeCreateCardModal, list_id } = useCreateCardModalStore();
 
   const cardDefault: CardProps = {
     label: '',
     description: '',
     deadline: '',
     id: 0,
-    listId: 0,
+    list_id: 0,
     completed: false
   };
 
@@ -24,15 +24,18 @@ const AddCardModal = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    // Add Card.
-    addCard(listId, {
-      ...card,
-      id: Date.now()
+    if (list_id === null) {
+      console.error('No list selected');
+      return;
+    }
+
+    createCard(list_id, {
+      ...card
     });
 
     // Reset.
     setCard(cardDefault);
-    closeAddCardModal();
+    closeCreateCardModal();
   };
 
   const handleInputChange = useCallback(
@@ -48,7 +51,9 @@ const AddCardModal = () => {
       <div className="w-full max-w-screen-sm bg-white p-4 rounded relative">
         <form onSubmit={handleSubmit}>
           <fieldset className="flex flex-col gap-2">
-            <legend className="font-bold text-lg w-full mb-2">Add Card</legend>
+            <legend className="font-bold text-lg w-full mb-2">
+              Create Card
+            </legend>
             <label className="text-sm" htmlFor="label">
               Label
               <input
@@ -88,10 +93,10 @@ const AddCardModal = () => {
             />
           </fieldset>
         </form>
-        <CloseButton onClick={closeAddCardModal} />
+        <CloseButton onClick={closeCreateCardModal} />
       </div>
     </div>
   );
 };
 
-export default AddCardModal;
+export default CreateCardModal;

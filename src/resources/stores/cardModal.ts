@@ -15,8 +15,8 @@ const useCardModalStore = create<CardModalState>((set) => ({
     description: '',
     deadline: '',
     id: 0,
-    listId: 0,
-    completed: true
+    list_id: 0,
+    completed: false
   },
   openCardModal: (card: CardProps) => set({ cardModalIsOpen: true, card }),
   closeCardModal: () => set({ cardModalIsOpen: false })

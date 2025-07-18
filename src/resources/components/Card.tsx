@@ -10,7 +10,7 @@ const Card = ({
   description,
   deadline,
   id,
-  listId,
+  list_id,
   completed
 }: CardProps) => {
   const { removeCard } = useListStore();
@@ -22,13 +22,13 @@ const Card = ({
       description,
       deadline,
       id,
-      listId,
+      list_id,
       completed
     });
   };
 
   const handleDeleteClick = () => {
-    removeCard(listId, id);
+    removeCard(list_id, id);
   };
 
   return (

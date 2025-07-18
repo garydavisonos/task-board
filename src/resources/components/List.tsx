@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 
 import { ListProps } from '@/resources/types/ListProps';
 import useListStore from '@/resources/stores/listStore';
-import useAddCardModalStore from '@/resources/stores/addCardModalStore';
+import useCreateCardModalStore from '@/resources/stores/createCardModalStore';
 
 import Button from './Button';
 import Card from './Card';
@@ -11,8 +11,8 @@ import { CardProps } from '../types/CardProps';
 import TextButton from './TextButton';
 
 const List = ({ cards, label, id }: ListProps) => {
-  const { removeList, lists, removeCard, addCard } = useListStore();
-  const { openAddCardModal } = useAddCardModalStore();
+  const { removeList, lists, removeCard, createCard } = useListStore();
+  const { openCreateCardModal } = useCreateCardModalStore();
   const [newListId, setNewListId] = useState<number | null>(null);
   const [selectedCards, setSelectedCards] = useState<CardProps[]>([]);
   const [moveCards, setMoveCards] = useState<boolean>(false);
@@ -46,7 +46,7 @@ const List = ({ cards, label, id }: ListProps) => {
         removeCard(id, card.id);
 
         // Add to new list.
-        addCard(newListId, card);
+        createCard(newListId, card);
 
         // Reset.
         setNewListId(null);
@@ -82,9 +82,9 @@ const List = ({ cards, label, id }: ListProps) => {
     []
   );
 
-  const handleAddCard = useCallback(() => {
-    openAddCardModal(id);
-  }, [openAddCardModal, id]);
+  const handleCreateCard = useCallback(() => {
+    openCreateCardModal(id);
+  }, [openCreateCardModal, id]);
 
   const handleCloseList = useCallback(() => {
     removeList(id);
@@ -108,11 +108,11 @@ const List = ({ cards, label, id }: ListProps) => {
               data-id={item.id}
               onClick={handleOnClickSelectCards}
             />
-            <Card key={item.id} {...item} listId={id} />
+            <Card key={item.id} {...item} list_id={id} />
           </div>
         );
       })}
-      <Button label="Add Card" type="secondary" onClick={handleAddCard} />
+      <Button label="Create Card" type="secondary" onClick={handleCreateCard} />
       {selectedCards.length > 0 && (
         <ul className="flex text-xs gap-4">
           <li>

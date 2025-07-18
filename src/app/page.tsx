@@ -1,31 +1,34 @@
 'use client';
 
+import { useEffect } from 'react';
 import useModalStore from '@/resources/stores/listModalStore';
 import useListStore from '@/resources/stores/listStore';
-import useAddCardModalStore from '@/resources/stores/addCardModalStore';
+import useCreateCardModalStore from '@/resources/stores/createCardModalStore';
 import useCardModalStore from '@/resources/stores/cardModal';
-import useHydrateStore from '@/resources/stores/hydratedStore';
 
 import Header from '@/resources/blocks/Header';
 import List from '@/resources/components/List';
 import Button from '@/resources/components/Button';
 import ListModal from '@/resources/components/ListModal';
-import AddCardModal from '@/resources/components/AddCardModal';
+import CreateCreateModal from '@/resources/components/CreateCardModal';
 import CardModal from '@/resources/components/CardModal';
 
 /**
  *
  */
 export default function Page() {
-  // Hydrate the page
-  useHydrateStore();
-
   const { listModalIsOpen, openListModal } = useModalStore();
-  const { hydrated, lists } = useListStore();
-  const { addCardModalIsOpen } = useAddCardModalStore();
+  const { lists, loading, error, fetchLists } = useListStore();
+  const { createCardModalIsOpen } = useCreateCardModalStore();
   const { cardModalIsOpen, card } = useCardModalStore();
 
-  if (!hydrated) {
+  // Fetch lists when component mounts.
+  useEffect(() => {
+    fetchLists();
+  }, [fetchLists]);
+
+  // Show loading state.
+  if (loading) {
     return (
       <>
         <Header />
@@ -33,6 +36,21 @@ export default function Page() {
           <div className="flex gap-2 items-center">
             <span className="text-xl">⌛</span>
             <h1 className="text-xl font-bold">Loading...</h1>
+          </div>
+        </main>
+      </>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <>
+        <Header />
+        <main className="p-4">
+          <div className="flex gap-2 items-center">
+            <span className="text-xl">❌</span>
+            <h1 className="text-xl font-bold">Error: {error}</h1>
           </div>
         </main>
       </>
@@ -50,16 +68,20 @@ export default function Page() {
             <Button label="Add List" onClick={openListModal} />
           </span>
         </div>
-        {lists.length > 0 && (
+        {lists.length > 0 ? (
           <ul className="flex gap-4 mt-4">
             {lists.map((item) => (
               <List key={item.id} {...item} />
             ))}
           </ul>
+        ) : (
+          <div className="mt-4">
+            <p>No lists found. Create your first list!</p>
+          </div>
         )}
       </main>
       {listModalIsOpen && <ListModal />}
-      {addCardModalIsOpen && <AddCardModal />}
+      {createCardModalIsOpen && <CreateCreateModal />}
       {cardModalIsOpen && <CardModal {...card} />}
     </>
   );

@@ -4,7 +4,7 @@ export interface CreateCardData {
   label: string;
   description: string;
   deadline?: string;
-  listId: number;
+  list_id: number;
   completed?: boolean;
 }
 
@@ -12,7 +12,7 @@ export interface UpdateCardData {
   label?: string;
   description?: string;
   deadline?: string;
-  listId?: number;
+  list_id?: number;
   completed?: boolean;
 }
 
@@ -118,6 +118,6 @@ export const cardService = {
    */
   async getCardsByListId(listId: number): Promise<CardProps[]> {
     const allCards = await this.getAllCards();
-    return allCards.filter((card) => card.listId === listId);
+    return allCards.filter((card) => card.list_id === listId);
   }
 };

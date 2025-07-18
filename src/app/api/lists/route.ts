@@ -1,9 +1,10 @@
 import db from '../../../../lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 
-// GET /api/lists - Get all lists
 /**
- *
+ * Handles the HTTP GET request to retrieve all lists from the database.
+ * @returns A JSON response containing an array of all lists or an error message.
+ * @throws Will return a 500 status if there is a database query error.
  */
 export async function GET() {
   try {
@@ -18,15 +19,20 @@ export async function GET() {
   }
 }
 
-// POST /api/lists - Create a new list
 /**
- *
- * @param request
+ * Handles the HTTP POST request to create a new list in the database.
+ * @param request - The incoming HTTP request object containing the list data.
+ * @param request.body - The JSON body containing list information.
+ * @param request.body.label - The list title/label (required).
+ * @param request.body.description - The list description (optional).
+ * @returns A JSON response containing the newly created list data or an error message.
+ * @throws Will return a 400 status if the `label` is missing from the request body.
+ * @throws Will return a 500 status if there is an internal server error during list creation.
  */
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { label, description } = body;
+    const { label } = body;
 
     if (!label) {
       return NextResponse.json({ error: 'Label is required' }, { status: 400 });
@@ -34,7 +40,6 @@ export async function POST(request: NextRequest) {
 
     const [id] = await db('lists').insert({
       label,
-      description,
       created_at: new Date(),
       updated_at: new Date()
     });

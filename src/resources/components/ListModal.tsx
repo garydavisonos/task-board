@@ -7,7 +7,7 @@ import CloseButton from './CloseButton';
 
 const ListModal = () => {
   const { closeListModal } = useListModalStore();
-  const { addList } = useListStore();
+  const { createList } = useListStore();
 
   const [listLabel, setListLabel] = useState('');
 
@@ -15,10 +15,8 @@ const ListModal = () => {
     event.preventDefault();
 
     // Add new list item.
-    addList({
-      id: Date.now(),
-      label: listLabel,
-      cards: []
+    createList({
+      label: listLabel
     });
 
     // Reset.

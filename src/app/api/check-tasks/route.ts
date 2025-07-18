@@ -8,7 +8,7 @@ const tasks: CardProps[] = [
     description: 'Lorem ipsum',
     deadline: '2025-08-15',
     id: 1,
-    listId: 12,
+    list_id: 12,
     completed: false
   },
   {
@@ -16,7 +16,7 @@ const tasks: CardProps[] = [
     description: 'Lorem ipsum',
     deadline: '2025-09-15',
     id: 12,
-    listId: 12,
+    list_id: 12,
     completed: false
   },
   {
@@ -24,7 +24,7 @@ const tasks: CardProps[] = [
     description: 'Lorem ipsum',
     deadline: '2025-06-15',
     id: 123,
-    listId: 12,
+    list_id: 12,
     completed: false
   },
   {
@@ -32,7 +32,7 @@ const tasks: CardProps[] = [
     description: 'Lorem ipsum',
     deadline: '2025-02-15',
     id: 1234,
-    listId: 12,
+    list_id: 12,
     completed: false
   }
 ];

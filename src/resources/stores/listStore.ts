@@ -1,165 +1,185 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import { ListProps } from '@/resources/types/ListProps';
-import { CardProps } from '@/resources/types/CardProps';
+import { listService, CreateListData } from '@/services/listService';
+import {
+  cardService,
+  CreateCardData,
+  UpdateCardData
+} from '@/services/cardService';
 
 type ListState = {
-  hydrated: boolean;
-  setHydrated: () => void;
   lists: ListProps[];
-  addList: (list: ListProps) => void;
-  removeList: (listId: number) => void;
-  addCard: (listId: number | null, card: CardProps) => void;
-  removeCard: (listId: number | null, cardId: number) => void;
-  updateCard: (
-    listId: number | null,
-    cardId: number,
-    updatedCard: CardProps
-  ) => void;
+  loading: boolean;
+  error: string | null;
+  // List methods
+  fetchLists: () => Promise<void>;
+  createList: (data: CreateListData) => Promise<void>;
+  updateList: (list_id: number, data: Partial<CreateListData>) => Promise<void>;
+  removeList: (list_id: number) => Promise<void>;
+  // Card methods
+  createCard: (list_id: number, card: CreateCardData) => Promise<void>;
+  removeCard: (list_id: number, cardId: number) => Promise<void>;
+  updateCard: (cardId: number, updatedCard: UpdateCardData) => Promise<void>;
 };
 
-const useListStore = create<ListState>()(
-  persist(
-    (set) => ({
-      hydrated: false,
-      setHydrated: () => set({ hydrated: true }),
-      lists: [
-        {
-          cards: [
-            {
-              label: 'Card 1.1',
-              description: 'Lorem ipsum',
-              deadline: '2025-07-16',
-              id: 1,
-              listId: 1,
-              completed: false
-            },
-            {
-              label: 'Card 1.2',
-              description: 'Lorem ipsum',
-              deadline: '2025-07-16',
-              id: 12,
-              listId: 1,
-              completed: false
-            },
-            {
-              label: 'Card 1.3',
-              description: 'Lorem ipsum',
-              deadline: '2025-07-16',
-              id: 123,
-              listId: 1,
-              completed: false
+const useListStore = create<ListState>((set) => ({
+  lists: [],
+  loading: false,
+  error: null,
+
+  // Fetch all lists with their cards from the API.
+  fetchLists: async () => {
+    set({ loading: true, error: null });
+    try {
+      const lists = await listService.getAllLists();
+
+      // Get Cards.
+      if (lists.length > 0) {
+        await Promise.all(
+          lists.map(async (list) => {
+            try {
+              list.cards = await cardService.getCardsByListId(list.id);
+              console.log(
+                `Cards for list ${list.id} (${list.label}):`,
+                list.cards
+              );
+            } catch (error) {
+              console.error(error);
+              list.cards = [];
             }
-          ],
-          id: 1,
-          label: 'List 1'
-        },
-        {
-          cards: [
-            {
-              label: 'Card 2.1',
-              description: 'Lorem ipsum',
-              deadline: '2025-08-15',
-              id: 2,
-              listId: 12,
-              completed: false
-            },
-            {
-              label: 'Card 2.2',
-              description: 'Lorem ipsum',
-              deadline: '2025-08-15',
-              id: 22,
-              listId: 12,
-              completed: false
-            },
-            {
-              label: 'Card 2.3',
-              description: 'Lorem ipsum',
-              deadline: '2025-08-15',
-              id: 223,
-              listId: 12,
-              completed: false
-            }
-          ],
-          id: 12,
-          label: 'List 2'
-        },
-        {
-          cards: [
-            {
-              label: 'Card 3.1',
-              description: 'Lorem ipsum',
-              deadline: '2025-07-14',
-              id: 3,
-              listId: 123,
-              completed: false
-            },
-            {
-              label: 'Card 3.2',
-              description: 'Lorem ipsum',
-              deadline: '2025-07-14',
-              id: 32,
-              listId: 123,
-              completed: false
-            },
-            {
-              label: 'Card 3.3',
-              description: 'Lorem ipsum',
-              deadline: '2025-07-14',
-              id: 323,
-              listId: 123,
-              completed: false
-            }
-          ],
-          id: 123,
-          label: 'List 3'
-        }
-      ],
-      addList: (list) =>
-        set((state) => ({
-          lists: [...state.lists, list]
-        })),
-      removeList: (listId) =>
-        set((state) => ({
-          lists: state.lists.filter((list) => list.id !== listId)
-        })),
-      addCard: (listId, card) =>
-        set((state) => ({
-          lists: state.lists.map((list) =>
-            list.id === listId
-              ? { ...list, cards: [...list.cards, card] }
-              : list
-          )
-        })),
-      removeCard: (listId, cardId) =>
-        set((state) => ({
-          lists: state.lists.map((list) =>
-            list.id === listId
-              ? {
-                  ...list,
-                  cards: list.cards.filter((card) => card.id !== cardId)
-                }
-              : list
-          )
-        })),
-      updateCard: (listId, cardId, updateCard) =>
-        set((state) => ({
-          lists: state.lists.map((list) =>
-            list.id === listId
-              ? {
-                  ...list,
-                  cards: list.cards.map((card) =>
-                    card.id === cardId ? updateCard : card
-                  )
-                }
-              : list
-          )
-        }))
-    }),
-    {
-      name: 'list-storage'
+          })
+        );
+      }
+
+      // For now, assuming lists come with cards from your API.
+      set({ lists, loading: false });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      set({ error: errorMessage, loading: false });
+      console.error('Error fetching lists:', error);
     }
-  )
-);
+  },
+
+  // Create a new list
+  createList: async (data: CreateListData) => {
+    set({ loading: true, error: null });
+    try {
+      const newList = await listService.createList(data);
+      // Initialize with empty cards array if not provided.
+      const listWithCards = { ...newList, cards: newList.cards || [] };
+      set((state) => ({
+        lists: [...state.lists, listWithCards],
+        loading: false
+      }));
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      set({ error: errorMessage, loading: false });
+      console.error('Error creating list:', error);
+    }
+  },
+
+  // Update an existing list.
+  updateList: async (list_id: number, data: Partial<CreateListData>) => {
+    set({ loading: true, error: null });
+    try {
+      const updatedList = await listService.updateList(list_id, data);
+      set((state) => ({
+        lists: state.lists.map((list) =>
+          list.id === list_id ? { ...list, ...updatedList } : list
+        ),
+        loading: false
+      }));
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      set({ error: errorMessage, loading: false });
+      console.error('Error updating list:', error);
+    }
+  },
+
+  // Remove a list.
+  removeList: async (list_id: number) => {
+    set({ loading: true, error: null });
+    try {
+      await listService.deleteList(list_id);
+      set((state) => ({
+        lists: state.lists.filter((list) => list.id !== list_id),
+        loading: false
+      }));
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      set({ error: errorMessage, loading: false });
+      console.error('Error removing list:', error);
+    }
+  },
+
+  // Add a card to a list.
+  createCard: async (list_id: number, cardData: CreateCardData) => {
+    set({ loading: true, error: null });
+    try {
+      const newCard = await cardService.createCard({ ...cardData, list_id });
+      set((state) => ({
+        lists: state.lists.map((list) =>
+          list.id === list_id
+            ? { ...list, cards: [...list.cards, newCard] }
+            : list
+        ),
+        loading: false
+      }));
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      set({ error: errorMessage, loading: false });
+      console.error('Error creating card:', error);
+    }
+  },
+
+  // Remove a card from a list.
+  removeCard: async (list_id: number, cardId: number) => {
+    set({ loading: true, error: null });
+    try {
+      await cardService.deleteCard(cardId);
+      set((state) => ({
+        lists: state.lists.map((list) =>
+          list.id === list_id
+            ? {
+                ...list,
+                cards: list.cards.filter((card) => card.id !== cardId)
+              }
+            : list
+        ),
+        loading: false
+      }));
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      set({ error: errorMessage, loading: false });
+      console.error('Error removing card:', error);
+    }
+  },
+
+  // Update a card.
+  updateCard: async (cardId: number, updatedCard: UpdateCardData) => {
+    set({ loading: true, error: null });
+    try {
+      const updated = await cardService.updateCard(cardId, updatedCard);
+      set((state) => ({
+        lists: state.lists.map((list) => ({
+          ...list,
+          cards: list.cards.map((card) => (card.id === cardId ? updated : card))
+        })),
+        loading: false
+      }));
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error';
+      set({ error: errorMessage, loading: false });
+      console.error('Error updating card:', error);
+    }
+  }
+}));
 
 export default useListStore;

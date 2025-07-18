@@ -11,18 +11,26 @@ const CardModal = ({
   label,
   description,
   deadline,
-  listId,
+  list_id,
   id,
   completed
 }: CardProps) => {
   const { closeCardModal } = useCardModalStore();
   const { updateCard } = useListStore();
   const [readOnly, setReadOnly] = useState(true);
+
+  // Convert datetime to date format for the input.
+  const formatDateForInput = (dateString?: string) => {
+    if (!dateString) return '';
+    // Convert "2025-07-27T00:00:00.000Z" to "2025-07-27"
+    return new Date(dateString).toISOString().split('T')[0];
+  };
+
   const [card, setCard] = useState({
     label,
     description,
-    deadline,
-    listId,
+    deadline: formatDateForInput(deadline),
+    list_id,
     id,
     completed
   });
@@ -40,7 +48,7 @@ const CardModal = ({
     event.preventDefault();
 
     // Mark complete.
-    updateCard(listId, id, { ...card, completed: true });
+    updateCard(id, { ...card, completed: true });
 
     // Send mock email.
     sendCompleteEmail(id);
@@ -60,7 +68,7 @@ const CardModal = ({
     event.preventDefault();
 
     // Update card.
-    updateCard(listId, id, card);
+    updateCard(id, card);
 
     // Reset.
     setReadOnly(true);
