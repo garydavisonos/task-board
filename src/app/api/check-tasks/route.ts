@@ -50,20 +50,37 @@ const tasks: CardProps[] = [
 export async function GET() {
   const now = new Date();
 
-  tasks.forEach((task) => {
-    const deadline = new Date(task.deadline);
-
-    if (now > deadline) {
-      console.log(`Your task ${task.label} is overdue!`);
-    }
-  });
-
-  return NextResponse.json(
-    {
-      message: 'Tasks have been checked for overdue deadlines'
-    },
-    {
-      status: 200
-    }
+  const overdueTasks = tasks.filter(
+    (task) => now > new Date(task.deadline) && !task.completed
   );
+
+  // Log overdue tasks.
+  overdueTasks.forEach((task) =>
+    console.log(`Your task ${task.label} is overdue!`)
+  );
+
+  // Return data.
+  if (overdueTasks.length > 0) {
+    return NextResponse.json(
+      {
+        message: `Found ${overdueTasks.length} overdue task(s)`,
+        overdueTasks: overdueTasks,
+        count: overdueTasks.length
+      },
+      {
+        status: 200
+      }
+    );
+  } else {
+    return NextResponse.json(
+      {
+        message: 'No overdue tasks found',
+        overdueTasks: [],
+        count: 0
+      },
+      {
+        status: 200
+      }
+    );
+  }
 }
