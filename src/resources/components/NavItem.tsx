@@ -1,7 +1,7 @@
 import { NavItemProps } from '@/resources/types/NavItemProps';
 import Link from 'next/link';
 
-const UtilityNavLink = ({ href, label }: NavItemProps) => {
+const NavItem = ({ href, label }: NavItemProps) => {
   return (
     <li>
       <Link href={href} className="underline hover:no-underline">
@@ -11,4 +11,4 @@ const UtilityNavLink = ({ href, label }: NavItemProps) => {
   );
 };
 
-export default UtilityNavLink;
+export default NavItem;

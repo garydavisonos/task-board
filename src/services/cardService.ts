@@ -116,8 +116,8 @@ export const cardService = {
    * Get cards by list ID
    * @param listId
    */
-  async getCardsByListId(listId: number): Promise<CardProps[]> {
+  async getCardsByListId(list_id: number): Promise<CardProps[]> {
     const allCards = await this.getAllCards();
-    return allCards.filter((card) => card.list_id === listId);
+    return allCards.filter((card) => card.list_id === list_id);
   }
 };

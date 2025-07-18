@@ -3,7 +3,7 @@ import { create } from 'zustand';
 type CreateCardModalStore = {
   createCardModalIsOpen: boolean;
   list_id: number | null;
-  openCreateCardModal: (listId: number) => void;
+  openCreateCardModal: (list_id: number) => void;
   closeCreateCardModal: () => void;
 };
 

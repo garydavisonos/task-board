@@ -39,10 +39,6 @@ const useListStore = create<ListState>((set) => ({
           lists.map(async (list) => {
             try {
               list.cards = await cardService.getCardsByListId(list.id);
-              console.log(
-                `Cards for list ${list.id} (${list.label}):`,
-                list.cards
-              );
             } catch (error) {
               console.error(error);
               list.cards = [];

@@ -10,7 +10,7 @@ import Header from '@/resources/blocks/Header';
 import List from '@/resources/components/List';
 import Button from '@/resources/components/Button';
 import ListModal from '@/resources/components/ListModal';
-import CreateCreateModal from '@/resources/components/CreateCardModal';
+import CreateCardModal from '@/resources/components/CreateCardModal';
 import CardModal from '@/resources/components/CardModal';
 
 /**
@@ -81,7 +81,7 @@ export default function Page() {
         )}
       </main>
       {listModalIsOpen && <ListModal />}
-      {createCardModalIsOpen && <CreateCreateModal />}
+      {createCardModalIsOpen && <CreateCardModal />}
       {cardModalIsOpen && <CardModal {...card} />}
     </>
   );

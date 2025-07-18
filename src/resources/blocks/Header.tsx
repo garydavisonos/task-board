@@ -1,4 +1,4 @@
-import UtilityNavLink from '@/resources/components/NavItem';
+import NavItem from '@/resources/components/NavItem';
 import { NavItemProps } from '@/resources/types/NavItemProps';
 
 const Header = () => {
@@ -20,7 +20,7 @@ const Header = () => {
       <nav id="utility-nav" className="bg-gray-600 text-white">
         <ul className="flex justify-end gap-4 py-2 px-4 text-sm">
           {utilityNavLinks.map((item) => (
-            <UtilityNavLink key={item.id} {...item} />
+            <NavItem key={item.id} {...item} />
           ))}
         </ul>
       </nav>
